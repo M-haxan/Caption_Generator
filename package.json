@@ -1,0 +1,25 @@
+{
+  "name": "caption_generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:frontend": "cd frontend && npm run dev",
+    "start:backend": "cd backend && node server.js",
+    "dev": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/M-haxan/Caption_Generator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/M-haxan/Caption_Generator/issues"
+  },
+  "homepage": "https://github.com/M-haxan/Caption_Generator#readme",
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
