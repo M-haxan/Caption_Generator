@@ -32,9 +32,9 @@ app.post('/api/generate', async (req, res) => {
     });
 
     if (!response.ok) {
-      // Yeh line Groq ka asal internal error nikale gi
+      
       const errorData = await response.json(); 
-      console.error("🔥 GROQ INTERNAL ERROR:", errorData);
+      console.error(" GROQ INTERNAL ERROR:", errorData);
       
       if (response.status === 429) {
         return res.status(429).json({ error: 'Rate limit exceeded. Please wait a minute.' });
@@ -46,7 +46,7 @@ app.post('/api/generate', async (req, res) => {
     res.json({ caption: data.choices[0].message.content });
 
   } catch (error) {
-    console.error("🔥 BACKEND ERROR DETAILS:", error);
+    console.error(" BACKEND ERROR DETAILS:", error);
     res.status(500).json({ error: error.message });
   }
 });
