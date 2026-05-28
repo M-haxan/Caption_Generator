@@ -22,7 +22,7 @@ app.post('/api/generate', async (req, res) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama3-8b-8192',
+        model: 'llama-3.3-70b-versatile',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: `Topic/Keywords: ${keywords}` }
@@ -32,16 +32,21 @@ app.post('/api/generate', async (req, res) => {
     });
 
     if (!response.ok) {
+      // Yeh line Groq ka asal internal error nikale gi
+      const errorData = await response.json(); 
+      console.error("🔥 GROQ INTERNAL ERROR:", errorData);
+      
       if (response.status === 429) {
         return res.status(429).json({ error: 'Rate limit exceeded. Please wait a minute.' });
       }
-      throw new Error(`Groq API Error: ${response.statusText}`);
+      throw new Error(`Groq API Error: ${JSON.stringify(errorData)}`);
     }
 
     const data = await response.json();
     res.json({ caption: data.choices[0].message.content });
 
   } catch (error) {
+    console.error("🔥 BACKEND ERROR DETAILS:", error);
     res.status(500).json({ error: error.message });
   }
 });

@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/M-haxan/Caption_Generator#readme",
   "dependencies": {
+    "@ai-sdk/groq": "^3.0.39",
+    "ai": "^6.0.191",
     "concurrently": "^9.2.1"
   }
 }
