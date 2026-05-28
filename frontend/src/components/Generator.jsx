@@ -4,10 +4,21 @@ export default function Generator({ addHistoryItem }) {
   const [keywords, setKeywords] = useState('');
   const [platform, setPlatform] = useState('LinkedIn');
   const [tone, setTone] = useState('Professional');
+  const [length, setLength] = useState('Medium (2-3 sentences)'); // Nayi state
   
   const [caption, setCaption] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Form aur result clear karne ka function
+  const handleClear = () => {
+    setKeywords('');
+    setCaption('');
+    setError('');
+    setPlatform('LinkedIn');
+    setTone('Professional');
+    setLength('Medium (2-3 sentences)');
+  };
 
   const handleGenerate = async (e) => {
     e.preventDefault();
@@ -22,10 +33,11 @@ export default function Generator({ addHistoryItem }) {
     setIsLoading(true);
 
     try {
+      // Length variable ko body mein bheja
       const response = await fetch('http://localhost:5000/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ keywords, platform, tone })
+        body: JSON.stringify({ keywords, platform, tone, length }) 
       });
 
       const data = await response.json();
@@ -40,6 +52,7 @@ export default function Generator({ addHistoryItem }) {
         id: Date.now(),
         platform,
         tone,
+        length,
         keywords,
         caption: data.caption,
         date: new Date().toLocaleDateString()
@@ -65,7 +78,7 @@ export default function Generator({ addHistoryItem }) {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-semibold mb-1">Platform</label>
             <select 
@@ -77,6 +90,7 @@ export default function Generator({ addHistoryItem }) {
               <option>Instagram</option>
               <option>Twitter (X)</option>
               <option>TikTok</option>
+              <option>FaceBook</option>
             </select>
           </div>
           
@@ -92,6 +106,19 @@ export default function Generator({ addHistoryItem }) {
               <option>Witty</option>
             </select>
           </div>
+
+          <div>
+            <label className="block text-sm font-semibold mb-1">Length</label>
+            <select 
+              className="w-full p-2 border rounded-lg"
+              value={length}
+              onChange={(e) => setLength(e.target.value)}
+            >
+              <option>Short (1-2 sentences)</option>
+              <option>Medium (2-3 sentences)</option>
+              <option>Long (Detailed post)</option>
+            </select>
+          </div>
         </div>
 
         {error && (
@@ -100,15 +127,26 @@ export default function Generator({ addHistoryItem }) {
           </div>
         )}
 
-        <button 
-          type="submit" 
-          disabled={isLoading}
-          className={`w-full py-3 rounded-lg font-bold text-white ${
-            isLoading ? 'bg-blue-300' : 'bg-blue-600 hover:bg-blue-700'
-          }`}
-        >
-          {isLoading ? '⏳ Generating...' : '✨ Generate Caption'}
-        </button>
+        <div className="flex gap-4">
+          <button 
+            type="submit" 
+            disabled={isLoading}
+            className={`flex-1 py-3 rounded-lg font-bold text-white ${
+              isLoading ? 'bg-blue-300' : 'bg-blue-600 hover:bg-blue-700'
+            }`}
+          >
+            {isLoading ? '⏳ Generating...' : '✨ Generate Caption'}
+          </button>
+          
+          <button 
+            type="button" 
+            onClick={handleClear}
+            disabled={isLoading}
+            className="px-6 py-3 rounded-lg font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 border border-gray-300"
+          >
+            Clear
+          </button>
+        </div>
       </form>
 
       {caption && (

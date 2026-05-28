@@ -18,6 +18,14 @@ export default function App() {
     localStorage.setItem('captionHistory', JSON.stringify(updated));
   };
 
+  // Naya function History clear karne ke liye
+  const clearHistory = () => {
+    if (window.confirm("Are you sure you want to clear all history?")) {
+      setHistory([]);
+      localStorage.removeItem('captionHistory');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans">
       <Hero />
@@ -41,7 +49,7 @@ export default function App() {
         {activeTab === 'generate' ? (
           <Generator addHistoryItem={addHistoryItem} />
         ) : (
-          <History history={history} />
+          <History history={history} clearHistory={clearHistory} />
         )}
       </div>
     </div>

@@ -10,10 +10,10 @@ app.use(express.json());
 const PORT = 5000;
 
 app.post('/api/generate', async (req, res) => {
-  const { keywords, platform, tone } = req.body;
+  const { keywords, platform, tone, length } = req.body;
 
   try {
-    const systemPrompt = `You are an expert social media manager. Generate a highly engaging caption for ${platform} using a ${tone} tone. The caption must include relevant emojis and hashtags at the end.`;
+    const systemPrompt = `You are an expert social media manager. Generate a highly engaging caption for ${platform} using a ${tone} tone. The length of the caption should be ${length}. The caption must include relevant emojis and hashtags at the end.`;
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
